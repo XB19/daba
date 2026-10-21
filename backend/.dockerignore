@@ -1,0 +1,6 @@
+target/
+config/
+uploads/
+.mvn/wrapper/maven-wrapper.jar
+*.iml
+.idea/
