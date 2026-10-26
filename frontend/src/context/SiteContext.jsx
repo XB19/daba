@@ -1,5 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { api } from '../lib/api'
+import { api, assetUrl } from '../lib/api'
+
+const withImage = (item) => ({ ...item, imageUrl: assetUrl(item.imageUrl) })
 
 const SiteContext = createContext(null)
 
@@ -20,10 +22,10 @@ export function SiteProvider({ children }) {
         api.get('/public/services'),
         api.get('/public/testimonials'),
       ])
-      setSettings(s.data)
+      setSettings(Object.fromEntries(Object.entries(s.data).map(([k, v]) => [k, k.endsWith('.image') ? assetUrl(v) : v])))
       setCategories(c.data)
-      setProducts(p.data)
-      setServices(sv.data)
+      setProducts(p.data.map(withImage))
+      setServices(sv.data.map(withImage))
       setTestimonials(t.data)
     } finally {
       setLoading(false)

@@ -2,7 +2,16 @@ import axios from 'axios'
 
 export const TOKEN_KEY = 'daba_token'
 
-export const api = axios.create({ baseURL: '/api' })
+/**
+ * Adresse du backend. Vide = même domaine que le site (proxy Nginx ou Vite).
+ * À définir au build (VITE_API_URL=https://api.mondomaine.tg) si le backend est hébergé ailleurs.
+ */
+export const API_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '')
+
+export const api = axios.create({ baseURL: `${API_URL}/api` })
+
+/** Les images téléversées (/uploads/...) sont servies par le backend. */
+export const assetUrl = (url) => (url && url.startsWith('/uploads/') ? `${API_URL}${url}` : url || undefined)
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem(TOKEN_KEY)

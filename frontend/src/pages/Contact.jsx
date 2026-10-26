@@ -41,7 +41,7 @@ export default function Contact() {
         title="Contactez-nous"
         text="Une question, une commande professionnelle ou un besoin particulier ? Notre équipe vous répond rapidement."
         crumb="Contact"
-        image="https://images.unsplash.com/photo-1601599561213-832382fd07ba?auto=format&fit=crop&w=1600&q=70"
+        image="/images/distribution.jpg"
       />
 
       <section className="section">

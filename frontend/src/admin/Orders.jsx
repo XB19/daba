@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
 import { Download, Eye, MapPin, Phone, ShoppingBag, Trash2 } from 'lucide-react'
-import { api, errorMessage, formatDate, formatPrice, ORDER_STATUS, PAYMENT_LABELS } from '../lib/api'
+import { api, errorMessage, formatDate, formatPrice, ORDER_STATUS, PAYMENT_LABELS, assetUrl } from '../lib/api'
 import { StatusBadge } from '../pages/Account'
 import { confirmDelete, Empty, Loading, Modal, PageTitle, SearchBox } from './kit'
 
@@ -125,7 +125,7 @@ export default function Orders() {
             <ul className="divide-y divide-gray-100 rounded-xl border border-gray-100">
               {current.items.map((it) => (
                 <li key={it.id} className="flex items-center gap-3 p-3 text-sm">
-                  {it.imageUrl && <img src={it.imageUrl} alt="" className="h-10 w-10 rounded-lg object-cover" />}
+                  {it.imageUrl && <img src={assetUrl(it.imageUrl)} alt="" className="h-10 w-10 rounded-lg object-cover" />}
                   <span className="flex-1"><b>{it.productName}</b><span className="block text-xs text-gray-400">{it.quantity} × {formatPrice(it.unitPrice)}</span></span>
                   <span className="font-semibold">{formatPrice(it.lineTotal)}</span>
                 </li>

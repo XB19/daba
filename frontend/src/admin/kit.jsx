@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import toast from 'react-hot-toast'
 import { ImagePlus, Search, Upload, X } from 'lucide-react'
-import { api, errorMessage } from '../lib/api'
+import { api, errorMessage, assetUrl } from '../lib/api'
 import { Spinner } from '../components/ui'
 
 export function PageTitle({ title, text, children }) {
@@ -99,7 +99,7 @@ export function ImageInput({ value, onChange }) {
         onDrop={(e) => { e.preventDefault(); upload(e.dataTransfer.files?.[0]) }}
         className="group relative grid h-24 w-24 shrink-0 place-items-center overflow-hidden rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 text-gray-400 hover:border-brand-400"
       >
-        {value ? <img src={value} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <ImagePlus size={24} />}
+        {value ? <img src={assetUrl(value)} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <ImagePlus size={24} />}
         <span className="absolute inset-0 grid place-items-center bg-ink/50 text-white opacity-0 transition group-hover:opacity-100">
           {busy ? <Spinner className="h-5 w-5" /> : <Upload size={20} />}
         </span>

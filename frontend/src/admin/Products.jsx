@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
 import { Package, Pencil, Plus, Star, Trash2 } from 'lucide-react'
-import { api, errorMessage, formatPrice } from '../lib/api'
+import { api, errorMessage, formatPrice, assetUrl } from '../lib/api'
 import { useSite } from '../context/SiteContext'
 import { confirmDelete, Empty, Field, ImageInput, Loading, Modal, PageTitle, SearchBox, Toggle } from './kit'
 
@@ -87,7 +87,7 @@ export default function Products() {
                   <tr key={p.id} className="hover:bg-gray-50/60">
                     <td className="a-td">
                       <div className="flex items-center gap-3">
-                        <img src={p.imageUrl || undefined} alt="" className="h-12 w-12 rounded-lg object-cover" />
+                        <img src={assetUrl(p.imageUrl)} alt="" className="h-12 w-12 rounded-lg object-cover" />
                         <div className="min-w-0"><p className="font-semibold">{p.name}</p><p className="max-w-xs truncate text-xs text-gray-400">{p.description}</p></div>
                       </div>
                     </td>

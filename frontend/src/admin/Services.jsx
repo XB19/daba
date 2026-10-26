@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { Pencil, Plus, Trash2, Wrench } from 'lucide-react'
-import { api, errorMessage } from '../lib/api'
+import { api, errorMessage, assetUrl } from '../lib/api'
 import { useSite } from '../context/SiteContext'
 import { DynamicIcon, SERVICE_ICONS } from '../components/ui'
 import { confirmDelete, Empty, Field, ImageInput, Loading, Modal, PageTitle, Toggle } from './kit'
@@ -51,7 +51,7 @@ export default function Services() {
           {list.map((s) => (
             <div key={s.id} className="a-card group overflow-hidden !p-0 transition hover:shadow-md">
               <div className="relative h-40">
-                <img src={s.imageUrl || undefined} alt="" className="h-full w-full object-cover" />
+                <img src={assetUrl(s.imageUrl)} alt="" className="h-full w-full object-cover" />
                 <span className="absolute bottom-3 left-3 grid h-10 w-10 place-items-center rounded-xl bg-brand-500 text-white"><DynamicIcon name={s.icon} size={18} /></span>
                 {s.showOnHome && <span className="absolute top-3 right-3 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold text-brand-700">Accueil</span>}
               </div>

@@ -17,7 +17,7 @@ export default function Services() {
         title="Nos services"
         text="Une expertise complète, de l’élevage jusqu’à votre assiette, pour garantir fraîcheur et qualité à chaque étape."
         crumb="Services"
-        image="https://images.unsplash.com/photo-1500595046743-cd271d694d30?auto=format&fit=crop&w=1600&q=70"
+        image="/images/ferme.jpg"
       />
 
       <section className="section">

@@ -38,7 +38,7 @@ export default function Login() {
   return (
     <section className="grid min-h-screen lg:grid-cols-2">
       <div className="relative hidden overflow-hidden bg-brand-950 lg:block">
-        <img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=1400&q=70" alt="" className="absolute inset-0 h-full w-full object-cover opacity-40" />
+        <img src="/images/elevage-poules.jpg" alt="" className="absolute inset-0 h-full w-full object-cover opacity-40" />
         <div className="absolute inset-0 bg-gradient-to-t from-brand-950 via-brand-950/60 to-transparent" />
         <div className="relative flex h-full flex-col justify-between p-12 text-white">
           <Logo light />

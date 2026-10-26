@@ -42,7 +42,7 @@ export default function Products() {
         title="Notre catalogue"
         text="Volailles fraîches, découpes, charcuteries et marinades maison : tout est préparé localement, avec soin."
         crumb="Produits"
-        image="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=1600&q=70"
+        image="/images/charcuterie.jpg"
       />
 
       <section className="py-14 md:py-20">
