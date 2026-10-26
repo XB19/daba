@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowRight, ArrowUpRight, BadgeCheck, CircleCheck, Leaf, Quote, ShieldCheck, Snowflake, Truck } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, BadgeCheck, ChefHat, CircleCheck, Hotel, House, Leaf, Quote, ShieldCheck, Snowflake, Store, Truck } from 'lucide-react'
 import { DynamicIcon, Reveal, SectionHeading, Stars } from '../components/ui'
 import ProductCard from '../components/ProductCard'
 import { useSite } from '../context/SiteContext'
@@ -214,9 +214,60 @@ function WhyUs() {
   )
 }
 
+const AUDIENCES = [
+  {
+    icon: ChefHat,
+    title: 'Restaurants & traiteurs',
+    text: 'Des volailles et marinades prêtes à cuisiner, livrées régulièrement pour tenir vos services.',
+  },
+  {
+    icon: Hotel,
+    title: 'Hôtels',
+    text: 'Un approvisionnement fiable en produits frais et transformés, au rythme de votre activité.',
+  },
+  {
+    icon: Store,
+    title: 'Supermarchés & distributeurs',
+    text: 'Des produits conditionnés et étiquetés, issus d’une production locale contrôlée.',
+  },
+  {
+    icon: House,
+    title: 'Familles & particuliers',
+    text: 'Commandez en ligne, payez à la livraison ou par mobile money, et recevez vos produits en 24h.',
+  },
+]
+
+/** Affiché tant qu'aucun avis client réel n'est publié depuis l'administration. */
+function Audiences() {
+  return (
+    <section className="section relative overflow-hidden bg-brand-950">
+      <div className="absolute top-0 left-1/4 h-96 w-96 rounded-full bg-brand-500/20 blur-3xl" />
+      <div className="container-x relative">
+        <SectionHeading light eyebrow="Nos clients" title="Pour qui travaillons-nous ?" text="Particuliers comme professionnels, chacun trouve chez DABA une offre adaptée à ses besoins." />
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {AUDIENCES.map(({ icon: Icon, title, text }, i) => (
+            <Reveal key={title} delay={i * 0.08}>
+              <div className="group flex h-full flex-col rounded-3xl border border-white/10 bg-white/5 p-7 backdrop-blur transition hover:-translate-y-1 hover:bg-white/10">
+                <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand-500 text-white shadow-lg shadow-brand-500/30 transition group-hover:scale-110">
+                  <Icon size={26} />
+                </span>
+                <h3 className="mt-6 text-lg font-bold text-white">{title}</h3>
+                <p className="mt-3 flex-1 leading-relaxed text-white/65">{text}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+        <Reveal className="mt-12 text-center">
+          <Link to="/contact" className="btn-ghost">Demander une offre professionnelle <ArrowRight size={16} /></Link>
+        </Reveal>
+      </div>
+    </section>
+  )
+}
+
 function Testimonials() {
   const { testimonials } = useSite()
-  if (!testimonials.length) return null
+  if (!testimonials.length) return <Audiences />
   return (
     <section className="section relative overflow-hidden bg-brand-950">
       <div className="absolute top-0 left-1/4 h-96 w-96 rounded-full bg-brand-500/20 blur-3xl" />

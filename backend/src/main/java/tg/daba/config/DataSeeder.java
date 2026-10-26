@@ -96,7 +96,7 @@ public class DataSeeder implements CommandLineRunner {
         seedSettings();
         if (categories.count() == 0) seedCatalog();
         if (services.count() == 0) seedServices();
-        if (testimonials.count() == 0) seedTestimonials();
+        removePlaceholderTestimonials();
         localizeExistingImages();
     }
 
@@ -235,20 +235,13 @@ public class DataSeeder implements CommandLineRunner {
         }
     }
 
-    /** Avis d'exemple : à remplacer par de vrais avis clients depuis l'administration. */
-    private void seedTestimonials() {
-        Object[][] rows = {
-                {"Client exemple 1", "Restaurateur", "Exemple d’avis : produits très frais et livraison à l’heure. À remplacer par un vrai témoignage.", 5},
-                {"Client exemple 2", "Gérant de supermarché", "Exemple d’avis : découpe régulière et service réactif. À remplacer par un vrai témoignage.", 5},
-                {"Client exemple 3", "Particulier", "Exemple d’avis : commande en ligne simple et rapide. À remplacer par un vrai témoignage.", 4}
-        };
-        for (Object[] r : rows) {
-            Testimonial t = new Testimonial();
-            t.setName((String) r[0]);
-            t.setRole((String) r[1]);
-            t.setComment((String) r[2]);
-            t.setRating((Integer) r[3]);
-            testimonials.save(t);
-        }
+    /**
+     * Supprime les avis d'exemple des premières versions. Les avis publiés doivent être de vrais
+     * témoignages clients, ajoutés depuis l'administration ; sans avis, l'accueil présente nos clientèles.
+     */
+    private void removePlaceholderTestimonials() {
+        testimonials.findAll().stream()
+                .filter(t -> t.getName() != null && t.getName().startsWith("Client exemple"))
+                .forEach(testimonials::delete);
     }
 }
