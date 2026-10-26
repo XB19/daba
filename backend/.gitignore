@@ -33,5 +33,5 @@ build/
 .vscode/
 
 ### Local secrets ###
-config/
-uploads/
+/config/
+/uploads/
