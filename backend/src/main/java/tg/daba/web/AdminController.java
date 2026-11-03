@@ -34,18 +34,20 @@ public class AdminController {
     private final UserRepository users;
     private final SettingRepository settings;
     private final ProductRepository products;
+    private final JobApplicationRepository jobApplications;
     private final PasswordEncoder encoder;
     private final Path uploadDir;
 
     public AdminController(OrderRepository orders, ContactMessageRepository messages, SubscriberRepository subscribers,
                            UserRepository users, SettingRepository settings, ProductRepository products,
-                           PasswordEncoder encoder, @Value("${app.upload-dir}") String uploadDir) {
+                           JobApplicationRepository jobApplications, PasswordEncoder encoder, @Value("${app.upload-dir}") String uploadDir) {
         this.orders = orders;
         this.messages = messages;
         this.subscribers = subscribers;
         this.users = users;
         this.settings = settings;
         this.products = products;
+        this.jobApplications = jobApplications;
         this.encoder = encoder;
         this.uploadDir = Path.of(uploadDir).toAbsolutePath();
     }
@@ -66,6 +68,7 @@ public class AdminController {
         res.put("outOfStock", products.countByAvailableFalse());
         res.put("customers", users.countByRole(AppUser.Role.CUSTOMER));
         res.put("unreadMessages", messages.countByReadFalse());
+        res.put("newApplications", jobApplications.countByStatus(JobApplication.Status.NOUVELLE));
         res.put("subscribers", subscribers.count());
         res.put("averageBasket", valid.isEmpty() ? 0 : valid.stream().mapToLong(CustomerOrder::getTotal).sum() / valid.size());
 

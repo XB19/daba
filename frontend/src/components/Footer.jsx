@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { ArrowRight, Mail, MapPin, Phone, Send } from 'lucide-react'
 import Logo from './Logo'
-import { NAV } from './Navbar'
+import { NAV_LINKS } from './Navbar'
 import { SocialIcons } from './ui'
 import { useSite } from '../context/SiteContext'
 import { api, errorMessage } from '../lib/api'
@@ -67,7 +67,7 @@ export default function Footer() {
         <div className="lg:col-span-2">
           <h4 className="mb-5 font-bold text-white">Navigation</h4>
           <ul className="space-y-3 text-sm">
-            {NAV.map((n) => (
+            {NAV_LINKS.map((n) => (
               <li key={n.to}>
                 <Link to={n.to} className="group inline-flex items-center gap-2 transition hover:text-brand-300">
                   <ArrowRight size={14} className="-ml-5 opacity-0 transition-all group-hover:ml-0 group-hover:opacity-100" />

@@ -29,8 +29,10 @@ services:
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Définissez ADMIN_PASSWORD dans le fichier .env}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost}
       UPLOAD_DIR: /app/uploads
+      CV_DIR: /app/private/cvs
     volumes:
       - uploads:/app/uploads
+      - cvs:/app/private/cvs
 
   frontend:
     build: ./frontend
@@ -43,3 +45,4 @@ services:
 volumes:
   db-data:
   uploads:
+  cvs:

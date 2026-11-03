@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react'
-import { Outlet, Route, Routes, useLocation } from 'react-router-dom'
+import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { motion } from 'framer-motion'
 import Navbar from './components/Navbar'
@@ -17,6 +17,9 @@ import OrderSuccess from './pages/OrderSuccess'
 import Login from './pages/Login'
 import Account from './pages/Account'
 import NotFound from './pages/NotFound'
+import Jobs from './pages/careers/Jobs'
+import JobDetail from './pages/careers/JobDetail'
+import Spontaneous from './pages/careers/Spontaneous'
 
 const AdminLayout = lazy(() => import('./admin/AdminLayout'))
 const AdminLogin = lazy(() => import('./admin/AdminLogin'))
@@ -30,6 +33,8 @@ const AdminMessages = lazy(() => import('./admin/Messages'))
 const AdminSubscribers = lazy(() => import('./admin/Subscribers'))
 const AdminUsers = lazy(() => import('./admin/Users'))
 const AdminSettings = lazy(() => import('./admin/Settings'))
+const AdminJobOffers = lazy(() => import('./admin/JobOffers'))
+const AdminApplications = lazy(() => import('./admin/Applications'))
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -85,6 +90,10 @@ export default function App() {
           <Route path="about" element={<About />} />
           <Route path="products" element={<Products />} />
           <Route path="services" element={<Services />} />
+          <Route path="careers" element={<Navigate to="/careers/jobs" replace />} />
+          <Route path="careers/jobs" element={<Jobs />} />
+          <Route path="careers/jobs/:id" element={<JobDetail />} />
+          <Route path="careers/spontaneous" element={<Spontaneous />} />
           <Route path="contact" element={<Contact />} />
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
@@ -105,6 +114,8 @@ export default function App() {
           <Route path="subscribers" element={<AdminSubscribers />} />
           <Route path="users" element={<AdminUsers />} />
           <Route path="settings" element={<AdminSettings />} />
+          <Route path="jobs" element={<AdminJobOffers />} />
+          <Route path="applications" element={<AdminApplications />} />
         </Route>
       </Routes>
       </Suspense>

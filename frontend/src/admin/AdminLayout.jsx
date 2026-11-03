@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, Navigate, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
-  ExternalLink, Inbox, LayoutDashboard, LogOut, Mail, Menu, MessageSquare, Package, Settings, ShoppingBag, Star, Tags, Users, Wrench, X,
+  BriefcaseBusiness, ExternalLink, FileUser, Inbox, LayoutDashboard, LogOut, Mail, Menu, MessageSquare, Package, Settings, ShoppingBag, Star, Tags, Users, Wrench, X,
 } from 'lucide-react'
 import Logo from '../components/Logo'
 import { useAuth } from '../context/AuthContext'
@@ -32,6 +32,13 @@ const MENU = [
       { to: '/admin/messages', label: 'Messages', icon: Inbox, badge: 'unreadMessages' },
       { to: '/admin/testimonials', label: 'Témoignages', icon: Star },
       { to: '/admin/subscribers', label: 'Newsletter', icon: Mail },
+    ],
+  },
+  {
+    group: 'Recrutement',
+    items: [
+      { to: '/admin/jobs', label: 'Offres d’emploi', icon: BriefcaseBusiness },
+      { to: '/admin/applications', label: 'Candidatures', icon: FileUser, badge: 'newApplications' },
     ],
   },
   { group: 'Site', items: [{ to: '/admin/settings', label: 'Contenu du site', icon: Settings }] },
