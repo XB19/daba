@@ -98,6 +98,7 @@ public class DataSeeder implements CommandLineRunner {
         if (services.count() == 0) seedServices();
         removePlaceholderTestimonials();
         localizeExistingImages();
+        applyPriceList202611();
     }
 
     private void seedAdmin() {
@@ -239,6 +240,79 @@ public class DataSeeder implements CommandLineRunner {
      * Supprime les avis d'exemple des premières versions. Les avis publiés doivent être de vrais
      * témoignages clients, ajoutés depuis l'administration ; sans avis, l'accueil présente nos clientèles.
      */
+    /**
+     * Grille tarifaire de novembre 2026 communiquée par la Direction.
+     * Appliquée une seule fois (clé « catalog.priceList ») pour ne jamais écraser les modifications
+     * faites ensuite dans l'administration.
+     * Colonnes : nom officiel, nom actuel au catalogue (ou null si nouveau produit), prix,
+     * puis pour un nouveau produit : catégorie, unité, image, description.
+     */
+    private void applyPriceList202611() {
+        final String key = "catalog.priceList";
+        final String version = "2026-11";
+        if (settings.findById(key).map(s -> version.equals(s.getValue())).orElse(false)) return;
+
+        Object[][] rows = {
+                {"Poulet frais", "Poulet entier", 2900},
+                {"Poulet PAC", null, 2900, "Poulets", "Pièce", "poulet-entier", "Poulet prêt à cuire, vidé et nettoyé."},
+                {"Cuisse", "Cuisse de poulet", 2500},
+                {"Blanc de poulet", "Blanc de poulet", 6500},
+                {"Ailes", "Ailes de poulet", 2500},
+                {"Gésiers", null, 2500, "Découpes", "Sachet", "grillades", "Gésiers de poulet frais, nettoyés."},
+                {"Dos", null, 1800, "Découpes", "Sachet", "blanc-poulet", "Dos de poulet, idéal pour bouillons et sauces."},
+                {"Pattes", null, 1000, "Découpes", "Sachet", "poulet-entier", "Pattes de poulet nettoyées."},
+                {"Poulet fumé", "Poulet fumé", 3800},
+                {"Cuisses fumées", null, 3500, "Produits transformés", "Sachet", "poulet-fume", "Cuisses de poulet fumées, prêtes à réchauffer."},
+                {"Poulet entier mariné", null, 6000, "Produits marinés", "Pièce", "haut-cuisses", "Poulet entier mariné, prêt à rôtir ou à griller."},
+                {"Ailes marinées", "Ailes marinées", 5000},
+                {"Cuisses marinées", "Cuisses marinées", 6000},
+                {"Saucisses 340G", "Saucisse", 1200},
+                {"Saucisses fumées", "Saucisse fumée", 1250},
+                {"Crispy", null, 3000, "Produits transformés", "Paquet", "poulet-pane", "Morceaux de poulet croustillants, prêts à frire."},
+                {"Saucisson", "Saucissons", 2500},
+                {"Paté de foie", "Pâté de foie", 1300},
+                {"Jambon nature", null, 7000, "Charcuteries", "Pièce", "charcuterie", "Jambon de volaille nature."},
+                {"Jambon aux fines herbes", null, 7500, "Charcuteries", "Pièce", "charcuterie", "Jambon de volaille aux fines herbes."},
+                {"Chipolatas", "Chipolatas", 3500},
+                {"Merguez", "Merguez", 3500},
+        };
+
+        List<Product> all = products.findAll();
+        Map<String, Category> cats = new java.util.HashMap<>();
+        categories.findAll().forEach(c -> cats.put(c.getName(), c));
+
+        for (Object[] r : rows) {
+            String official = (String) r[0];
+            String current = (String) r[1];
+            int price = (Integer) r[2];
+            Product existing = all.stream()
+                    .filter(p -> p.getName().equalsIgnoreCase(current != null ? current : official)
+                            || p.getName().equalsIgnoreCase(official))
+                    .findFirst().orElse(null);
+            if (existing != null) {
+                existing.setPrice(price);
+                if ("Saucisse".equals(existing.getName())) {
+                    existing.setName("Saucisses 340 g");
+                    existing.setDescription("Saucisses de volaille, paquet de 340 g.");
+                }
+                products.save(existing);
+            } else if (r.length > 3) {
+                Product p = new Product();
+                p.setName(official);
+                p.setPrice(price);
+                p.setCategory(cats.get((String) r[3]));
+                p.setUnit((String) r[4]);
+                p.setImageUrl("/images/" + r[5] + ".jpg");
+                p.setDescription((String) r[6]);
+                products.save(p);
+            }
+        }
+        settings.findById("stats.1.value")
+                .filter(s -> "22+".equals(s.getValue()))
+                .ifPresent(s -> { s.setValue("30+"); settings.save(s); });
+        settings.save(new Setting(key, version));
+    }
+
     private void removePlaceholderTestimonials() {
         testimonials.findAll().stream()
                 .filter(t -> t.getName() != null && t.getName().startsWith("Client exemple"))
