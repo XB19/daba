@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, Navigate, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
-  BriefcaseBusiness, ExternalLink, FileUser, Inbox, LayoutDashboard, LogOut, Mail, Menu, MessageSquare, Package, Settings, ShoppingBag, Star, Tags, Users, Wrench, X,
+  BriefcaseBusiness, ExternalLink, FileUser, TicketPercent, Inbox, LayoutDashboard, LogOut, Mail, Menu, MessageSquare, Package, Settings, ShoppingBag, Star, Tags, Users, Wrench, X,
 } from 'lucide-react'
 import Logo from '../components/Logo'
 import { useAuth } from '../context/AuthContext'
@@ -24,6 +24,7 @@ const MENU = [
       { to: '/admin/products', label: 'Produits', icon: Package },
       { to: '/admin/categories', label: 'Catégories', icon: Tags },
       { to: '/admin/services', label: 'Services', icon: Wrench },
+      { to: '/admin/deals', label: 'Bons plans', icon: TicketPercent },
     ],
   },
   {

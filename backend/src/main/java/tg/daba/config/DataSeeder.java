@@ -42,13 +42,14 @@ public class DataSeeder implements CommandLineRunner {
     private final TestimonialRepository testimonials;
     private final SettingRepository settings;
     private final UserRepository users;
+    private final DealRepository deals;
     private final PasswordEncoder encoder;
     private final String adminEmail;
     private final String adminPassword;
 
     public DataSeeder(CategoryRepository categories, ProductRepository products, ServiceItemRepository services,
                       TestimonialRepository testimonials, SettingRepository settings, UserRepository users,
-                      PasswordEncoder encoder,
+                      DealRepository deals, PasswordEncoder encoder,
                       @Value("${app.admin.email}") String adminEmail,
                       @Value("${app.admin.password}") String adminPassword) {
         this.categories = categories;
@@ -57,6 +58,7 @@ public class DataSeeder implements CommandLineRunner {
         this.testimonials = testimonials;
         this.settings = settings;
         this.users = users;
+        this.deals = deals;
         this.encoder = encoder;
         this.adminEmail = adminEmail;
         this.adminPassword = adminPassword;
@@ -99,6 +101,45 @@ public class DataSeeder implements CommandLineRunner {
         removePlaceholderTestimonials();
         localizeExistingImages();
         applyPriceList202611();
+        seedGroupDeals();
+    }
+
+    /**
+     * Bons plans communs aux sites du groupe (affiches ZenCard et offre Kapi Consult).
+     * Créés une seule fois (clé « deals.groupSeed ») : ensuite, tout se gère depuis l'administration.
+     */
+    private void seedGroupDeals() {
+        final String key = "deals.groupSeed";
+        if (settings.existsById(key)) return;
+        if (deals.count() == 0) {
+            Object[][] posters = {
+                    {"ZenCard — Offre Spéciale", "zencard_pub2.jpg"},
+                    {"ZenCard — Promotion Exclusive", "zencard_pub3.jpg"},
+                    {"ZenCard — Bon Plan #5", "zencard_pub5.jpg"},
+                    {"ZenCard — Bon Plan #6", "zencard_pub6.jpg"},
+                    {"ZenCard — Bon Plan #7", "zencard_pub7.jpg"},
+                    {"ZenCard — Édition Spéciale", "zencard_pub5b.jpg"},
+                    {"ZenCard — Offre Limitée", "zencard_pub6b.jpg"},
+                    {"ZenCard — Le Produit", "zencard_product.jpg"},
+            };
+            int pos = 1;
+            for (Object[] p : posters) {
+                Deal d = new Deal();
+                d.setTitle((String) p[0]);
+                d.setBadge("ZenCard");
+                d.setImageUrl("/images/zencard/" + p[1]);
+                d.setPosition(pos++);
+                deals.save(d);
+            }
+            Deal formation = new Deal();
+            formation.setTitle("Formation Gratuite : Maîtrisez Excel pour les RH");
+            formation.setBadge("Bon Plan");
+            formation.setSummary("Kapi Consult vous offre un accès gratuit à sa formation en ligne \"Excel pour les professionnels RH\" pour tout abonnement...");
+            formation.setCtaUrl("https://kapiconsult.tg/articles/formation-gratuite-maitrisez-excel-pour-les-rh-69b2408f8940d");
+            formation.setPosition(pos);
+            deals.save(formation);
+        }
+        settings.save(new Setting(key, "2026-11"));
     }
 
     private void seedAdmin() {

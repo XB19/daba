@@ -12,6 +12,7 @@ export const NAV = [
   { to: '/about', label: 'À propos' },
   { to: '/products', label: 'Produits' },
   { to: '/services', label: 'Services' },
+  { to: '/bons-plans', label: 'Bons plans' },
   {
     to: '/careers',
     label: 'Carrière',

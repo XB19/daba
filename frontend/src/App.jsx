@@ -20,6 +20,8 @@ import NotFound from './pages/NotFound'
 import Jobs from './pages/careers/Jobs'
 import JobDetail from './pages/careers/JobDetail'
 import Spontaneous from './pages/careers/Spontaneous'
+import Deals from './pages/Deals'
+import BackToTop from './components/BackToTop'
 
 const AdminLayout = lazy(() => import('./admin/AdminLayout'))
 const AdminLogin = lazy(() => import('./admin/AdminLogin'))
@@ -35,6 +37,7 @@ const AdminUsers = lazy(() => import('./admin/Users'))
 const AdminSettings = lazy(() => import('./admin/Settings'))
 const AdminJobOffers = lazy(() => import('./admin/JobOffers'))
 const AdminApplications = lazy(() => import('./admin/Applications'))
+const AdminDeals = lazy(() => import('./admin/Deals'))
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -73,6 +76,7 @@ function PublicLayout() {
         <Outlet />
       </main>
       <Footer />
+      <BackToTop />
       <WhatsAppButton />
     </>
   )
@@ -90,6 +94,7 @@ export default function App() {
           <Route path="about" element={<About />} />
           <Route path="products" element={<Products />} />
           <Route path="services" element={<Services />} />
+          <Route path="bons-plans" element={<Deals />} />
           <Route path="careers" element={<Navigate to="/careers/jobs" replace />} />
           <Route path="careers/jobs" element={<Jobs />} />
           <Route path="careers/jobs/:id" element={<JobDetail />} />
@@ -115,6 +120,7 @@ export default function App() {
           <Route path="users" element={<AdminUsers />} />
           <Route path="settings" element={<AdminSettings />} />
           <Route path="jobs" element={<AdminJobOffers />} />
+          <Route path="deals" element={<AdminDeals />} />
           <Route path="applications" element={<AdminApplications />} />
         </Route>
       </Routes>
